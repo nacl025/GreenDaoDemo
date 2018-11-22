@@ -1,4 +1,4 @@
-package com.example.edmund.greendaodemo.helper;
+package com.example.edmund.greendaodemo.db;
 
 /**
  * 数据库更新辅助类
@@ -33,7 +33,6 @@ public class MigrationHelper {
     }
 
     public void migrate(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
-
         generateTempTables(db, daoClasses);
         DaoMaster.dropAllTables(db, true);
         DaoMaster.createAllTables(db, false);
@@ -108,11 +107,20 @@ public class MigrationHelper {
                 }
             }
             StringBuilder insertTableStringBuilder = new StringBuilder();
-            insertTableStringBuilder.append("INSERT INTO ").append(tableName).append(" (");
-            insertTableStringBuilder.append(TextUtils.join(",", properties));
-            insertTableStringBuilder.append(") SELECT ");
-            insertTableStringBuilder.append(TextUtils.join(",", properties));
-            insertTableStringBuilder.append(" FROM ").append(tempTableName).append(";");
+            if(daoClasses[i].getSimpleName().equals("StudentDao")) {
+                //为了解决int类型 is not null 问题，添加默认值。
+                insertTableStringBuilder.append("INSERT INTO ").append(tableName).append(" (");
+                insertTableStringBuilder.append(TextUtils.join(",", properties));
+                insertTableStringBuilder.append(",GRATE3) SELECT ");
+                insertTableStringBuilder.append(TextUtils.join(",", properties));
+                insertTableStringBuilder.append(",9 FROM ").append(tempTableName).append(";");
+            }else{
+                insertTableStringBuilder.append("INSERT INTO ").append(tableName).append(" (");
+                insertTableStringBuilder.append(TextUtils.join(",", properties));
+                insertTableStringBuilder.append(") SELECT ");
+                insertTableStringBuilder.append(TextUtils.join(",", properties));
+                insertTableStringBuilder.append(" FROM ").append(tempTableName).append(";");
+            }
             StringBuilder dropTableStringBuilder = new StringBuilder();
             dropTableStringBuilder.append("DROP TABLE ").append(tempTableName);
             db.execSQL(insertTableStringBuilder.toString());

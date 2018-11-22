@@ -28,6 +28,9 @@ public class StudentDao extends AbstractDao<Student, Long> {
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
         public final static Property Age = new Property(2, int.class, "age", false, "AGE");
         public final static Property Num = new Property(3, String.class, "num", false, "NUM");
+        public final static Property Grate = new Property(4, String.class, "grate", false, "GRATE");
+        public final static Property Grate2 = new Property(5, Integer.class, "grate2", false, "GRATE2");
+        public final static Property Grate3 = new Property(6, int.class, "grate3", false, "GRATE3");
     }
 
 
@@ -46,7 +49,10 @@ public class StudentDao extends AbstractDao<Student, Long> {
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"NAME\" TEXT," + // 1: name
                 "\"AGE\" INTEGER NOT NULL ," + // 2: age
-                "\"NUM\" TEXT);"); // 3: num
+                "\"NUM\" TEXT," + // 3: num
+                "\"GRATE\" TEXT," + // 4: grate
+                "\"GRATE2\" INTEGER," + // 5: grate2
+                "\"GRATE3\" INTEGER NOT NULL );"); // 6: grate3
     }
 
     /** Drops the underlying database table. */
@@ -74,6 +80,17 @@ public class StudentDao extends AbstractDao<Student, Long> {
         if (num != null) {
             stmt.bindString(4, num);
         }
+ 
+        String grate = entity.getGrate();
+        if (grate != null) {
+            stmt.bindString(5, grate);
+        }
+ 
+        Integer grate2 = entity.getGrate2();
+        if (grate2 != null) {
+            stmt.bindLong(6, grate2);
+        }
+        stmt.bindLong(7, entity.getGrate3());
     }
 
     @Override
@@ -95,6 +112,17 @@ public class StudentDao extends AbstractDao<Student, Long> {
         if (num != null) {
             stmt.bindString(4, num);
         }
+ 
+        String grate = entity.getGrate();
+        if (grate != null) {
+            stmt.bindString(5, grate);
+        }
+ 
+        Integer grate2 = entity.getGrate2();
+        if (grate2 != null) {
+            stmt.bindLong(6, grate2);
+        }
+        stmt.bindLong(7, entity.getGrate3());
     }
 
     @Override
@@ -108,7 +136,10 @@ public class StudentDao extends AbstractDao<Student, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
             cursor.getInt(offset + 2), // age
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // num
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // num
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // grate
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // grate2
+            cursor.getInt(offset + 6) // grate3
         );
         return entity;
     }
@@ -119,6 +150,9 @@ public class StudentDao extends AbstractDao<Student, Long> {
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setAge(cursor.getInt(offset + 2));
         entity.setNum(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setGrate(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setGrate2(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setGrate3(cursor.getInt(offset + 6));
      }
     
     @Override

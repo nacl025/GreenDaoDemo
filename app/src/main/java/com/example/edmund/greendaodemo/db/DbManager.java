@@ -5,13 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.edmund.greendaodemo.dao.DaoMaster;
 import com.example.edmund.greendaodemo.dao.DaoSession;
-import com.example.edmund.greendaodemo.helper.MyOpenHelper;
+
+import org.greenrobot.greendao.database.Database;
 
 
 public class DbManager {
 
     // 是否加密
-    public static final boolean ENCRYPTED = true;
+    public static final boolean ENCRYPTED = false;
 
     private static final String DB_NAME = "test.db";
     private static DbManager mDbManager;
@@ -63,8 +64,20 @@ public class DbManager {
         if (null == mDevOpenHelper) {
             getInstance(context);
         }
-
         return mDevOpenHelper.getWritableDatabase();
+    }
+
+    /**
+     * 获取加密可写数据库
+     *
+     * @param context
+     * @return
+     */
+    public static Database getEncryptedWritableDb(Context context){
+        if (null == mDevOpenHelper) {
+            getInstance(context);
+        }
+        return mDevOpenHelper.getEncryptedWritableDb("zhangyan");
     }
 
     /**
@@ -73,11 +86,15 @@ public class DbManager {
      * @param context
      * @return
      */
-    public static DaoMaster getDaoMaster(Context context) {
+    public static DaoMaster getDaoMaster3(Context context) {
         if (null == mDaoMaster) {
             synchronized (DbManager.class) {
                 if (null == mDaoMaster) {
-                    mDaoMaster = new DaoMaster(getWritableDatabase(context));
+                    if (ENCRYPTED) {
+                        mDaoMaster = new DaoMaster(getEncryptedWritableDb(context));
+                    } else {
+                        mDaoMaster = new DaoMaster(getWritableDatabase(context));
+                    }
                 }
             }
         }
@@ -91,7 +108,7 @@ public class DbManager {
      * @param context
      * @return
      */
-    public static DaoMaster getDaoMaster2(Context context) {
+    public static DaoMaster getDaoMaster(Context context) {
         if (null == mDaoMaster) {
             synchronized (DbManager.class) {
                 if (null == mDaoMaster) {

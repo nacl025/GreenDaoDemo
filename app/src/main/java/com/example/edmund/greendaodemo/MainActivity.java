@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void initData() {
         for (int i = 0; i < 100; i++) {
-            Student student = new Student((long) i, "huang" + i, 25,"666"+i);
+            Student student = new Student((long) i, "huang" + i, 25,"666"+i, "0" ,2, 3);
             studentList.add(student);
         }
     }
@@ -58,26 +58,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 StudentDaoOpe.insertData(this, studentList);
                 break;
             case R.id.button2:
-                Student student = new Student((long) 5, "haung" + 5, 25,"123456");
-                /**
+                /*Student student = new Student((long) 5, "haung" + 5, 25,"123456",1);
+                *//**
                  * 根据特定的对象删除
-                 */
+                 *//*
                 StudentDaoOpe.deleteData(this, student);
-                /**
+                *//**
                  * 根据主键删除
-                 */
+                 *//*
                 StudentDaoOpe.deleteByKeyData(this, 7);
-                StudentDaoOpe.deleteAllData(this);
+                StudentDaoOpe.deleteAllData(this);*/
                 break;
             case R.id.button3:
-                student = new Student((long) 2, "caojin", 1314,"888888");
-                StudentDaoOpe.updateData(this, student);
+                /*Student student = new Student((long) 2, "caojin", 1314,"888888","1");
+                StudentDaoOpe.updateData(this, student);*/
                 break;
             case R.id.button4:
                 List<Student> students = StudentDaoOpe.queryAll(this);
                 tvContent.setText(students.toString());
                 for (int i = 0; i < students.size(); i++) {
-                    Log.i("Log", students.get(i).getName());
+                    Log.i("Log", students.toString());
                 }
                 break;
             case R.id.button5:

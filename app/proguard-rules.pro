@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+
+# 如果按照上面介绍的加入了数据库加密功能，则需添加一下配置
+#sqlcipher数据库加密开始
+-keep  class net.sqlcipher.** {*;}
+-keep  class net.sqlcipher.database.** {*;}
+
